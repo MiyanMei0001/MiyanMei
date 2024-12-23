@@ -96,3 +96,5 @@ pyyaml
 # Telegram
 telebot
 python-telegram-bot
+pydub
+watchdog
