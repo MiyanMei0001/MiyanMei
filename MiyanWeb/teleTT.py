@@ -32,7 +32,7 @@ if __name__ == "__main__":
     @bot.message_handler(commands=['start'])
     def send_welcome(message):
         markup = InlineKeyboardMarkup()
-        markup.add(InlineKeyboardButton("Download TikTok Video", callback_data="tiktok"))
+        markup.add("Download TikTok Video", callback_data="tiktok"))
         markup.add(InlineKeyboardButton("Download TikTok HD Video", callback_data="tiktokhd"))
         markup.add(InlineKeyboardButton("Convert Video to MP3", callback_data="tomp3"))
         
@@ -79,7 +79,7 @@ if __name__ == "__main__":
             video_url = video_data['data']['hdplay']
             video_title = video_data['data']['title']
             markup = InlineKeyboardMarkup()
-            markup.add(InlineKeyboardButton("Convert to MP3", callback_data=f"tomp3|{video_url}"))
+            markup.add(InlineKeyboardButton("Convert to MP3", callback_data=f"tomp3|{video_url[:60]}"))
             bot.send_video(chat_id=message.chat.id, video=video_url, reply_to_message_id=message.message_id, caption=f"📝 {video_title}", reply_markup=markup)
             bot.delete_message(chat_id=message.chat.id, message_id=processing_msg.message_id)
         except Exception as e:
