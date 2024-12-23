@@ -1,0 +1,1 @@
+sudo tar xvzf ./ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin && ngrok authtoken 2oH2SDrm8TwkZdZ3Mhi4KhB72x6_54en1cw6tZifa33XXo2Tr && ngrok http --url=crucial-renewing-sparrow.ngrok-free.app 5000

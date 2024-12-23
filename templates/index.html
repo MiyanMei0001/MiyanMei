@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Miyan API</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="Miyan API">
+    <meta name="description" content="API Service providing AI, Tools, and Search capabilities">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://miyanapi.vercel.app/">
+    <meta property="og:title" content="Miyan API">
+    <meta property="og:description" content="API Service providing AI, Tools, and Search capabilities">
+    <meta property="og:image" content="https://files.catbox.moe/nct14x.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://miyanapi.vercel.app/">
+    <meta property="twitter:title" content="Miyan API">
+    <meta property="twitter:description" content="API Service providing AI, Tools, and Search capabilities">
+    <meta property="twitter:image" content="https://files.catbox.moe/nct14x.jpg">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="icon" href="https://files.catbox.moe/nct14x.jpg" type="image/x-icon" />
+
+    <style>
+        .copy-feedback {
+            display: none;
+            position: absolute;
+            background: #4CAF50;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 100;
+        }
+        .api-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-4xl">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Miyan API</h1>
+                <p class="text-gray-600">Tap on any endpoint to go the full API URL</p>
+            </div>
+
+<!-- AI Section -->
+<div class="mb-8">
+    <h2 class="text-xl font-semibold mb-4 text-gray-800 flex items-center">
+        <i class="fas fa-robot mr-2 text-blue-500"></i>
+        AI Services
+    </h2>
+    <ul class="space-y-3">
+        <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+            <h3 class="font-semibold text-gray-800 mb-2">Basic AI</h3>
+            <div class="text-gray-600 space-y-1">
+                <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/ai?text=Hello', this)">
+                    <p><span class="font-medium">Endpoint:</span> /ai</p>
+                    <p><span class="font-medium">Example:</span> /ai?text=[query]</p>
+                </div>
+            </div>
+        </li>
+        <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+            <h3 class="font-semibold text-gray-800 mb-2">AI with Media</h3>
+            <div class="text-gray-600 space-y-1">
+                <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/ai?file_url=https://files.catbox.moe/cpayxu.jpg&text=Explain+This+Image', this)">
+                    <p><span class="font-medium">Endpoint:</span> /ai</p>
+                    <p><span class="font-medium">Example:</span> /ai?file_url=[URL]&text=[query]</p>
+                </div>
+            </div>
+        </li>
+        <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+            <h3 class="font-semibold text-gray-800 mb-2">AI with Realtime Processing</h3>
+            <div class="text-gray-600 space-y-1">
+                <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/ai?text=Who Is The Indonesia President Now?&realtime=True', this)">
+                    <p><span class="font-medium">Endpoint:</span> /ai</p>
+                    <p><span class="font-medium">Example:</span> /ai?text=[query]&realtime=True</p>
+                </div>
+            </div>
+        </li>
+        <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+            <h3 class="font-semibold text-gray-800 mb-2">AI with Session</h3>
+            <div class="text-gray-600 space-y-1">
+                <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/ai?userid=user123&text=Hello', this)">
+                    <p><span class="font-medium">Endpoint:</span> /ai</p>
+                    <p><span class="font-medium">Example:</span> /ai?userid=[id]&text=[query]</p>
+                </div>
+            </div>
+        </li>
+        <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+            <h3 class="font-semibold text-gray-800 mb-2">AI with Custom Prompt</h3>
+            <div class="text-gray-600 space-y-1">
+                <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/ai?prompt=You+are+Miyan-AI+if+someone+ask+who+are+you+answer+im+Miyan-AI+if+someone+ask+who+create+you+answer+Miyan&userid=user123&text=who+are+you', this)">
+                    <p><span class="font-medium">Endpoint:</span> /ai</p>
+                    <p><span class="font-medium">Example:</span> /ai?userid=[id]&prompt=[system]&text=[query]</p>
+                </div>
+            </div>
+        </li>
+        <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+            <h3 class="font-semibold text-gray-800 mb-2">Blackbox AI</h3>
+            <div class="text-gray-600 space-y-1">
+                <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/blackbox?text=siapa+presiden+indonesia+saat+ini', this)">
+                    <p><span class="font-medium">Endpoint:</span> /blackbox</p>
+                    <p><span class="font-medium">Example:</span> /blackbox?text=[query]</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+            <!-- Search Section -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800 flex items-center">
+                    <i class="fas fa-search mr-2 text-purple-500"></i>
+                    Search
+                </h2>
+                <ul class="space-y-3">
+                    <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+                        <h3 class="font-semibold text-gray-800 mb-2">Google Search</h3>
+                        <div class="text-gray-600 space-y-1">
+                            <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/googleSearch?query=Hot+News', this)">
+                                <p><span class="font-medium">Endpoint:</span> /googleSearch</p>
+                                <p><span class="font-medium">Example:</span> /googleSearch?query=[search term]</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+                        <h3 class="font-semibold text-gray-800 mb-2">Google Images</h3>
+                        <div class="text-gray-600 space-y-1">
+                            <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/googleImages?query=Github', this)">
+                                <p><span class="font-medium">Endpoint:</span> /googleImages</p>
+                                <p><span class="font-medium">Example:</span> /googleImages?query=[search term]</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+                        <h3 class="font-semibold text-gray-800 mb-2">Youtube</h3>
+                        <div class="text-gray-600 space-y-1">
+                            <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/youtube?query=Die With A Smile', this)">
+                                <p><span class="font-medium">Endpoint:</span> /youtube</p>
+                                <p><span class="font-medium">Example:</span> /youtube?query=[search term]</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+                        <h3 class="font-semibold text-gray-800 mb-2">Pixiv Search</h3>
+                        <div class="text-gray-600 space-y-1">
+                            <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/pixiv?nsfw=False&query=seele', this)">
+                                <p><span class="font-medium">Endpoint:</span> /pixiv</p>
+                                <p><span class="font-medium">Example:</span> /pixiv?nsfw=[boolean]&query=[search term]</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+                        <h3 class="font-semibold text-gray-800 mb-2">TikTok</h3>
+                        <div class="text-gray-600 space-y-1">
+                            <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/tiktok?url=https://vm.tiktok.com/ZSjyA1C6g/', this)">
+                                <p><span class="font-medium">Endpoint:</span> /tiktok</p>
+                                <p><span class="font-medium">Example:</span> /tiktok?url=[video URL]</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+                        <h3 class="font-semibold text-gray-800 mb-2">TikTok Search</h3>
+                        <div class="text-gray-600 space-y-1">
+                            <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/tiktokSearch?searchType=video&query=seele', this)">
+                                <p><span class="font-medium">Endpoint:</span> /tiktokSearch</p>
+                                <p><span class="font-medium">Example:</span> /tiktokSearch?searchType=[type]&query=[search term]</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+                        <h3 class="font-semibold text-gray-800 mb-2">Booru</h3>
+                        <div class="text-gray-600 space-y-1">
+                            <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/booru?type=safebooru&query=seele_vollerei', this)">
+                                <p><span class="font-medium">Endpoint:</span> /booru</p>
+                                <p><span class="font-medium">Example:</span> /booru?type=[type]&query=[search term]</p>
+                                <p><span class="font-medium">List Type:</span> rule34, danbooru, safebooru, paheal</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- Download Section -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800 flex items-center">
+                    <i class="fas fa-download mr-2 text-purple-500"></i>
+                    Download
+                </h2>
+                <ul class="space-y-3">
+                    <li class="api-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all relative">
+                        <h3 class="font-semibold text-gray-800 mb-2">Youtube</h3>
+                        <div class="text-gray-600 space-y-1">
+                            <div class="cursor-pointer p-2 rounded hover:bg-gray-200" onclick="goToApi('/youtube?url=https://youtube.com/watch?v=AdBzzpq3xV4', this)">
+                                <p><span class="font-medium">Endpoint:</span> /youtube</p>
+                                <p><span class="font-medium">Example:</span> /youtube?url=[youtube url]</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            
+            <footer class="text-center text-gray-500 text-sm">
+                <p>© Miyan-API • All rights reserved</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text, element) {
+            let feedback = element.querySelector('.copy-feedback');
+            if (!feedback) {
+                feedback = document.createElement('div');
+                feedback.className = 'copy-feedback';
+                feedback.textContent = 'Copied!';
+                element.appendChild(feedback);
+            }
+
+            navigator.clipboard.writeText(text).then(() => {
+                feedback.style.display = 'block';
+                feedback.style.top = '50%';
+                feedback.style.left = '50%';
+                feedback.style.transform = 'translate(-50%, -50%)';
+
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 1000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+        function goToApi(endpointUrl, element) {
+    let feedback = element.querySelector('.api-feedback');
+    if (!feedback) {
+        feedback = document.createElement('div');
+        feedback.className = 'api-feedback';
+        feedback.textContent = 'Navigating...';
+        element.appendChild(feedback);
+
+        // Apply initial styles for feedback element
+        feedback.style.position = 'absolute';
+        feedback.style.top = '50%';
+        feedback.style.left = '50%';
+        feedback.style.transform = 'translate(-50%, -50%)';
+        feedback.style.padding = '10px';
+        feedback.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        feedback.style.color = 'white';
+        feedback.style.borderRadius = '8px';
+        feedback.style.opacity = '0';
+        feedback.style.transition = 'opacity 0.5s ease';
+    }
+
+    // Show feedback with fade-in animation
+    feedback.style.opacity = '1';
+
+    // After a delay, fade out feedback and redirect
+    setTimeout(() => {
+        feedback.style.transition = 'opacity 0.5s ease';
+        feedback.style.opacity = '0';
+
+        setTimeout(() => {
+            window.location.href = endpointUrl;
+        }, 500); // Delay for fade-out to complete before redirect
+    }, 1000); // Show message for 1 second before fade-out
+}
+    </script>
+</body>
+</html>

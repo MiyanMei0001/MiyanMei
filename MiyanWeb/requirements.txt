@@ -1,0 +1,24 @@
+# Telegram Bot
+pyTelegramBotAPI
+
+# Web Framework
+Flask
+Werkzeug
+
+# MongoDB
+pymongo
+
+# Environment Variables
+python-dotenv
+
+# Time and Date handling
+pytz
+
+# HTTP Client (for potential future integrations)
+requests
+
+# WSGI Server (for production deployment)
+gunicorn
+
+# Security
+cryptography

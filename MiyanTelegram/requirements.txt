@@ -1,0 +1,6 @@
+pyTelegramBotAPI
+Flask
+flask-limiter
+python-dotenv
+pymongo
+schedule
