@@ -9,7 +9,6 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import sys
 import time
-import hashlib
 
 API_TOKEN = '7510887805:AAEXvIUp3CyNC92nrtG8zJsUI9s0mZ9V26Y'
 bot = telebot.TeleBot(API_TOKEN)
@@ -22,9 +21,6 @@ class RestartOnChangeHandler(FileSystemEventHandler):
         if event.src_path == self.script:
             print(f"{event.src_path} has been modified. Restarting...")
             os.execv(sys.executable, ['python'] + sys.argv)
-
-def get_unique_id(url):
-    return hashlib.md5(url())
 
 if __name__ == "__main__":
     script_path = os.path.abspath(__file__)
@@ -63,10 +59,7 @@ if __name__ == "__main__":
             video_data = response.json()
             video_url = video_data['data']['play']
             video_title = video_data['data']['title']
-            unique_id = get_unique_id(video_url)
-            markup = InlineKeyboardMarkup()
-            markup.add(InlineKeyboardButton("Convert to MP3", callback_data=f"tomp3|{unique_id}"))
-            bot.send_video(chat_id=message.chat.id, video=video_url, reply_to_message_id=message.message_id, caption=f"📝 {video_title}", reply_markup=markup)
+            bot.send_video(chat_id=message.chat.id, video=video_url, reply_to_message_id=message.message_id, caption=f"📝 {video_title}")
             bot.delete_message(chat_id=message.chat.id, message_id=processing_msg.message_id)
         except Exception as e:
             bot.reply_to(message, f"❌ An error occurred: {e}")
@@ -83,20 +76,23 @@ if __name__ == "__main__":
             video_data = response.json()
             video_url = video_data['data']['hdplay']
             video_title = video_data['data']['title']
-            unique_id = get_unique_id(video_url)
-            markup = InlineKeyboardMarkup()
-            markup.add(InlineKeyboardButton("Convert to MP3", callback_data=f"tomp3|{unique_id}"))
-            bot.send_video(chat_id=message.chat.id, video=video_url, reply_to_message_id=message.message_id, caption=f"📝 {video_title}", reply_markup=markup)
+            bot.send_video(chat_id=message.chat.id, video=video_url, reply_to_message_id=message.message_id, caption=f"📝 {video_title}")
             bot.delete_message(chat_id=message.chat.id, message_id=processing_msg.message_id)
         except Exception as e:
             bot.reply_to(message, f"❌ An error occurred: {e}")
 
-    @bot.callback_query_handler(func=lambda call: call.data.startswith("tomp3|"))
-    def convert_to_mp3_callback(call):
+    @bot.message_handler(commands=['tomp3'])
+    def convert_to_mp3(message):
         try:
-            unique_id = call.data.split("|")[1]
-            processing_msg = bot.send_message(call.message.chat.id, "⏳ Converting video to MP3...")
+            if not message.reply_to_message or not message.reply_to_message.video:
+                bot.reply_to(message, "❌ Please reply to a video message with /tomp3")
+                return
+            processing_msg = bot.reply_to(message, "⏳ Converting video to MP3...")
+            video_file_id = message.reply_to_message.video.file_id
+            file_info = bot.get_file(video_file_id)
+            video_path = file_info.file_path
             with tempfile.NamedTemporaryFile(suffix='.mp4', delete=False) as video_temp, tempfile.NamedTemporaryFile(suffix='.mp3', delete=False) as audio_temp:
+                video_url = f"https://api.telegram.org/file/bot{API_TOKEN}/{video_path}"
                 urllib.request.urlretrieve(video_url, video_temp.name)
                 video_clip = VideoFileClip(video_temp.name)
                 audio_clip = video_clip.audio
@@ -104,12 +100,12 @@ if __name__ == "__main__":
                 audio_clip.close()
                 video_clip.close()
                 with open(audio_temp.name, 'rb') as audio_file:
-                    bot.send_audio(chat_id=call.message.chat.id, audio=audio_file, caption="🎵 Here's your audio file")
+                    bot.send_audio(chat_id=message.chat.id, audio=audio_file, reply_to_message_id=message.reply_to_message.message_id, caption="🎵 Here's your audio file")
             os.unlink(video_temp.name)
             os.unlink(audio_temp.name)
-            bot.delete_message(chat_id=call.message.chat.id, message_id=processing_msg.message_id)
+            bot.delete_message(chat_id=message.chat.id, message_id=processing_msg.message_id)
         except Exception as e:
-            bot.send_message(call.message.chat.id, f"❌ An error occurred during conversion: {e}")
+            bot.reply_to(message, f"❌ An error occurred during conversion: {e}")
 
     bot.infinity_polling()
 
