@@ -1,7 +1,7 @@
 import telebot
 import requests
 import os
-from moviepy.editor import VideoFileClip
+from moviepy import VideoFileClip
 import tempfile
 import urllib.request
 
