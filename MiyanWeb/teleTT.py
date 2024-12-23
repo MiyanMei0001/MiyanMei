@@ -4,9 +4,28 @@ import os
 from moviepy import VideoFileClip
 import tempfile
 import urllib.request
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 API_TOKEN = '7510887805:AAEXvIUp3CyNC92nrtG8zJsUI9s0mZ9V26Y'
 bot = telebot.TeleBot(API_TOKEN)
+
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    markup = InlineKeyboardMarkup()
+    markup.add(InlineKeyboardButton("Download TikTok Video", callback_data="tiktok"))
+    markup.add(InlineKeyboardButton("Download TikTok HD Video", callback_data="tiktokhd"))
+    markup.add(InlineKeyboardButton("Convert Video to MP3", callback_data="tomp3"))
+    
+    bot.send_message(message.chat.id, "Welcome! Choose a command:", reply_markup=markup)
+
+@bot.callback_query_handler(func=lambda call: call.data in ['tiktok', 'tiktokhd', 'tomp3'])
+def handle_callback(call):
+    if call.data == 'tiktok':
+        bot.send_message(call.message.chat.id, "Send the TikTok video URL with /tiktok [video_url]")
+    elif call.data == 'tiktokhd':
+        bot.send_message(call.message.chat.id, "Send the TikTok HD video URL with /tiktokhd [video_url]")
+    elif call.data == 'tomp3':
+        bot.send_message(call.message.chat.id, "Reply to a video message with /tomp3 to convert it to MP3")
 
 @bot.message_handler(commands=['tiktok'])
 def download_tiktok(message):
