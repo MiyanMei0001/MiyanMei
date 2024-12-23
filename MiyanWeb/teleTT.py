@@ -9,6 +9,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import sys
 import time
+import hashlib
 
 API_TOKEN = '7510887805:AAEXvIUp3CyNC92nrtG8zJsUI9s0mZ9V26Y'
 bot = telebot.TeleBot(API_TOKEN)
@@ -22,6 +23,9 @@ class RestartOnChangeHandler(FileSystemEventHandler):
             print(f"{event.src_path} has been modified. Restarting...")
             os.execv(sys.executable, ['python'] + sys.argv)
 
+def get_unique_id(url):
+    return hashlib.md5(url()
+
 if __name__ == "__main__":
     script_path = os.path.abspath(__file__)
     event_handler = RestartOnChangeHandler(script=script_path)
@@ -32,7 +36,7 @@ if __name__ == "__main__":
     @bot.message_handler(commands=['start'])
     def send_welcome(message):
         markup = InlineKeyboardMarkup()
-        markup.add("Download TikTok Video", callback_data="tiktok"))
+        markup.add(InlineKeyboardButton("Download TikTok Video", callback_data="tiktok"))
         markup.add(InlineKeyboardButton("Download TikTok HD Video", callback_data="tiktokhd"))
         markup.add(InlineKeyboardButton("Convert Video to MP3", callback_data="tomp3"))
         
@@ -59,8 +63,9 @@ if __name__ == "__main__":
             video_data = response.json()
             video_url = video_data['data']['play']
             video_title = video_data['data']['title']
+            unique_id = get_unique_id(video_url)
             markup = InlineKeyboardMarkup()
-            markup.add(InlineKeyboardButton("Convert to MP3", callback_data=f"tomp3|{video_url}"))
+            markup.add(InlineKeyboardButton("Convert to MP3", callback_data=f"tomp3|{unique_id}"))
             bot.send_video(chat_id=message.chat.id, video=video_url, reply_to_message_id=message.message_id, caption=f"📝 {video_title}", reply_markup=markup)
             bot.delete_message(chat_id=message.chat.id, message_id=processing_msg.message_id)
         except Exception as e:
@@ -78,8 +83,9 @@ if __name__ == "__main__":
             video_data = response.json()
             video_url = video_data['data']['hdplay']
             video_title = video_data['data']['title']
+            unique_id = get_unique_id(video_url)
             markup = InlineKeyboardMarkup()
-            markup.add(InlineKeyboardButton("Convert to MP3", callback_data=f"tomp3|{video_url[:60]}"))
+            markup.add(InlineKeyboardButton("Convert to MP3", callback_data=f"tomp3|{unique_id}"))
             bot.send_video(chat_id=message.chat.id, video=video_url, reply_to_message_id=message.message_id, caption=f"📝 {video_title}", reply_markup=markup)
             bot.delete_message(chat_id=message.chat.id, message_id=processing_msg.message_id)
         except Exception as e:
@@ -88,7 +94,7 @@ if __name__ == "__main__":
     @bot.callback_query_handler(func=lambda call: call.data.startswith("tomp3|"))
     def convert_to_mp3_callback(call):
         try:
-            video_url = call.data.split("|")[1]
+            unique_id = call.data.split("|")[1]
             processing_msg = bot.send_message(call.message.chat.id, "⏳ Converting video to MP3...")
             with tempfile.NamedTemporaryFile(suffix='.mp4', delete=False) as video_temp, tempfile.NamedTemporaryFile(suffix='.mp3', delete=False) as audio_temp:
                 urllib.request.urlretrieve(video_url, video_temp.name)
