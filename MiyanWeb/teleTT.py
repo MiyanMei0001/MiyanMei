@@ -8,33 +8,53 @@ bot = telebot.TeleBot(API_TOKEN)
 @bot.message_handler(commands=['tiktok'])
 def download_tiktok(message):
     try:
-                tiktok_url = message.text.split()[1]
+        # Send a "processing" message first
+        processing_msg = bot.reply_to(message, "⏳ Processing your request...")
         
-                response = requests.get(f'http://localhost:5000/tiktok?url={tiktok_url}')
-                
-                video_data = response.json()
+        tiktok_url = message.text.split()[1]
+        response = requests.get(f'http://localhost:5000/tiktok?url={tiktok_url}')
+        video_data = response.json()
+        video_url = video_data['data']['play']
+        video_title = video_data['data']['title']
 
-                video_url = video_data['data']['play']
-
-                bot.send_video(message.chat.id, video_url)
+        # Send video as reply to original message with the video title as caption
+        bot.send_video(
+            chat_id=message.chat.id,
+            video=video_url,
+            reply_to_message_id=message.message_id,
+            caption=f"📝 {video_title}"
+        )
+        
+        # Delete the processing message
+        bot.delete_message(chat_id=message.chat.id, message_id=processing_msg.message_id)
         
     except Exception as e:
-        bot.reply_to(message, f"An error occurred: {e}")
+        bot.reply_to(message, f"❌ An error occurred: {e}")
 
 @bot.message_handler(commands=['tiktokhd'])
 def download_tiktok_hd(message):
     try:
-                tiktok_url = message.text.split()[1]
+        # Send a "processing" message first
+        processing_msg = bot.reply_to(message, "⏳ Processing your HD request...")
         
-                response = requests.get(f'http://localhost:5000/tiktok?url={tiktok_url}')
-               
-                video_data = response.json()
+        tiktok_url = message.text.split()[1]
+        response = requests.get(f'http://localhost:5000/tiktok?url={tiktok_url}')
+        video_data = response.json()
+        video_url = video_data['data']['hdplay']
+        video_title = video_data['data']['title']
 
-                video_url = video_data['data']['hdplay']
-
-                bot.send_video(message.chat.id, video_url)
-
+        # Send HD video as reply to original message with the video title as caption
+        bot.send_video(
+            chat_id=message.chat.id,
+            video=video_url,
+            reply_to_message_id=message.message_id,
+            caption=f"📝 {video_title}"
+        )
+        
+        # Delete the processing message
+        bot.delete_message(chat_id=message.chat.id, message_id=processing_msg.message_id)
+        
     except Exception as e:
-        bot.reply_to(message, f"An error occurred: {e}")
+        bot.reply_to(message, f"❌ An error occurred: {e}")
 
 bot.infinity_polling()
