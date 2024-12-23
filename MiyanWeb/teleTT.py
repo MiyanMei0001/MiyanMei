@@ -24,7 +24,7 @@ class RestartOnChangeHandler(FileSystemEventHandler):
             os.execv(sys.executable, ['python'] + sys.argv)
 
 def get_unique_id(url):
-    return hashlib.md5(url()
+    return hashlib.md5(url())
 
 if __name__ == "__main__":
     script_path = os.path.abspath(__file__)
