@@ -1,100 +1,26 @@
 # Web Scraping
 aiohttp
-booru
 bs4
-lxml
-mechanicalsoup
-pyquery
 requests
-requests-html
-selenium
-websockets
-
-# Selenium WebDriver (Chromium/Chrome)
-chromedriver-autoinstaller
-webdriver-manager
 
 # Image & Video Processing
-imageio
-moviepy
-numpy
-opencv-contrib-python
-opencv-python-headless
 Pillow
-Pillow-SIMD
-pyvips
-pytesseract
-pyzbar
-rembg[gpu,cli]
-scikit-image
-tesserocr
 
 # Machine Learning & Data Science
-matplotlib
 numpy
 pandas
-scikit-learn
-seaborn
-
-# Natural Language Processing (NLP)
-google-generativeai
 
 # Networking & Web APIs
 asyncio
-django
-django-rest-framework
-fastapi
-flask
-flask-cors
-flask-limiter
-flask-restful
-flask-socketio
-gunicorn
-hypercorn
-pydantic
 quart
-sherlock
+requests
 
 # Databases & ORM
-elasticsearch
-mongoengine
-mysqlclient
-peewee
-psycopg2
 pymongo
-pymongo[srv]
-redis
-sqlalchemy
 
 # Automation, Scheduling & Task Queue
-celery
-rq
 schedule
-
-# Development & Testing
-loguru
-pytest
-pytest-cov
-python-dotenv
-pyjokes
-pipdeptree
-rich
-tqdm
-
-# Security & Encryption
-paramiko
-psutil
-pycryptodome
-pyzmq
-
-# Miscellaneous Utilities
-pyautogui
-pyttsx3
-pytubefix
-pyyaml
+watchdog
 
 # Telegram
 telebot
-python-telegram-bot
-pydub
-watchdog
