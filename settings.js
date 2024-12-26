@@ -76,7 +76,7 @@ global.maxsendmulti = 5
 global.r34thumbnail = ''
 global.imagePath = "MiyanMedia/theme/Miyan.jpg"
 global.videoPath = "MiyanMedia/theme/Miyan.mp4"
-global.imageUrl = "https://files.catbox.moe/c0nbz8.jpg"
+global.imageUrl = "https://files.catbox.moe/3rq24r.jpg"
 //bot sett
 global.typemenu = 'v1' // menu type 'v1' => 'v12'
 global.typereply = 'v1' // reply type 'v1' => 'v4'
