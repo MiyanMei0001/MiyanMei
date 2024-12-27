@@ -1,1 +1,16 @@
-aiohttp bs4 requests Pillow numpy pandas quart requests pymongo schedule watchdog telebot google.generativeai pytubefix booru playwright
+aiohttp
+bs4
+requests
+Pillow
+numpy
+pandas
+quart
+requests
+pymongo
+schedule
+watchdog
+telebot
+google.generativeai
+pytubefix
+booru
+playwright
