@@ -1,0 +1,21 @@
+{
+    "name": "Miyan Development Environment",
+    "forwardPorts": [5000, 3000], // Forward ports 5000 and 3000
+    "portsAttributes": {
+        "5000": {
+            "label": "Miyan-Api",
+            "onAutoForward": "ignore"
+        },
+        "3000": {
+            "label": "Miyan-Telegram",
+            "onAutoForward": "ignore"
+        }
+    },
+    "postCreateCommand": "chmod 755 node.sh python.sh git-pull.sh package.sh", // Make scripts executable
+    "postStartCommand": "sh python.sh & watch -n 1 sh git-pull.sh & sh package.sh & sh node.sh", // Run all tasks
+    "customizations": {
+        "vscode": {
+            "extensions": [] // Add any required extensions here
+        }
+    }
+}
