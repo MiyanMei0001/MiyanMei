@@ -11911,28 +11911,16 @@ case 'ai-voice': {
             let kanjut = util.promisify(require('child_process').exec);
             
             let { stdout } = await kanjut(`curl -s -F files[]=@${media} https://uguu.se/upload | jq -r '.files[0].url'`);
-            let url = stdout.trim();
+            let fileUrl = stdout.trim();
             
-            let gemini = await axios.get(`http://localhost:5000/ai`, {
-                params: {
-                    text: text,
-                    file_url: url,
-                    model: global.aimodel,
-                    userid: m.sender,
-                    voice: true // Add voice parameter
-                },
-                responseType: 'arraybuffer' // Ensure the response is treated as binary data
-            });
+            const backendUrl = new URL('http://localhost:5000/ai');
+            backendUrl.searchParams.append('text', text);
+            backendUrl.searchParams.append('file_url', fileUrl);
+            backendUrl.searchParams.append('model', global.aimodel);
+            backendUrl.searchParams.append('userid', m.sender);
+            backendUrl.searchParams.append('voice', true); // Add voice parameter
             
-            // Save the audio file temporarily
-            const audioFilePath = `response_${Date.now()}.mp3`;
-            fs.writeFileSync(audioFilePath, gemini.data);
-            
-            // Send the audio file
-            await Miyan.sendAudio(m.chat, fs.readFileSync(audioFilePath));
-            
-            // Delete the temporary file
-            fs.unlinkSync(audioFilePath);
+            await Miyan.sendAudio(m.chat, backendUrl.toString());
             return;
         } catch (err) {
             console.error(err);
@@ -11942,25 +11930,13 @@ case 'ai-voice': {
     }
     
     try {
-        let gemini = await axios.get(`http://localhost:5000/ai`, {
-            params: { 
-                text: text,
-                model: global.aimodel,
-                userid: m.sender,
-                voice: true // Add voice parameter
-            },
-            responseType: 'arraybuffer' // Ensure the response is treated as binary data
-        });
+        const backendUrl = new URL('http://localhost:5000/ai');
+        backendUrl.searchParams.append('text', text);
+        backendUrl.searchParams.append('model', global.aimodel);
+        backendUrl.searchParams.append('userid', m.sender);
+        backendUrl.searchParams.append('voice', true); // Add voice parameter
         
-        // Save the audio file temporarily
-        const audioFilePath = `response_${Date.now()}.mp3`;
-        fs.writeFileSync(audioFilePath, gemini.data);
-        
-        // Send the audio file
-        await Miyan.sendAudio(m.chat, fs.readFileSync(audioFilePath));
-        
-        // Delete the temporary file
-        fs.unlinkSync(audioFilePath);
+        await Miyan.sendAudio(m.chat, backendUrl.toString());
         return;
     } catch (err) {
         console.error(err);
