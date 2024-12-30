@@ -613,7 +613,7 @@ async def process_ai():
             tts = gTTS(text=response.text, lang='en')
             audio_filename = "response.mp3"
             tts.save(audio_filename)
-            return send_file(audio_filename, as_attachment=True)
+            return await send_file(audio_filename)
 
         return jsonify({
             'status': 200,
