@@ -33,6 +33,7 @@ from booru import *
 from playwright.async_api import async_playwright
 from hypercorn.config import Config
 from datetime import datetime
+from gtts import gTTS
 
 # Variable
 app = Quart(__name__)
@@ -536,6 +537,7 @@ async def process_ai():
     realtime = request.args.get('realtime') or False
     userid = request.args.get('userid')
     prompt = request.args.get('prompt')
+    voice = request.args.get('voice') or False  # New parameter for voice
     url_pattern = r'(https?://[^\s]+(?:\?[^\s]*)?)'
     urls = re.findall(url_pattern, text)
 
@@ -543,25 +545,21 @@ async def process_ai():
         if not text:
             return jsonify({'error': 'Missing text parameter'}), 400
 
-        
         if urls:
             async with aiohttp.ClientSession() as session:
                 async with session.get(urls[0], allow_redirects=True) as web_response:
                     web_content = await web_response.text()
                     text = f'{web_content}\n\n{text}'
 
-        
         if userid:
             if userid not in ai_history:
                 ai_history[userid] = []
-            
             
             ai_history[userid].append({
                 "role": "user",
                 "parts": [text]
             })
 
-        
         if prompt:
             model = genai.GenerativeModel(
                 model_name=f"{model}",
@@ -582,12 +580,10 @@ async def process_ai():
                 }
             )
 
-        
         chat = model.start_chat(
             history=ai_history[userid] if userid and ai_history.get(userid) else None
         )
 
-        
         if realtime:
             google_search_result = await googleSearch(text)
             if google_search_result:
@@ -606,12 +602,18 @@ async def process_ai():
         else:
             response = chat.send_message(text)
 
-        
         if userid:
             ai_history[userid].append({
                 "role": "model",
                 "parts": [response.text]
             })
+
+        # Convert text to speech if voice parameter is True
+        if voice:
+            tts = gTTS(text=response.text, lang='en')
+            audio_filename = "response.mp3"
+            tts.save(audio_filename)
+            return send_file(audio_filename, as_attachment=True)
 
         return jsonify({
             'status': 200,

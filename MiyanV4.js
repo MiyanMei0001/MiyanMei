@@ -11903,6 +11903,73 @@ case 'ai': {
 }
 break;
 
+case 'ai-voice': {
+    if (!text) return await replygcmiyan(`*Example:* ${prefix + command} Who are you?`);
+    if (isMedia) {
+        try {
+            let media = await Miyan.downloadAndSaveMediaMessage(quoted, makeid(5));
+            let kanjut = util.promisify(require('child_process').exec);
+            
+            let { stdout } = await kanjut(`curl -s -F files[]=@${media} https://uguu.se/upload | jq -r '.files[0].url'`);
+            let url = stdout.trim();
+            
+            let gemini = await axios.get(`http://localhost:5000/ai`, {
+                params: {
+                    text: text,
+                    file_url: url,
+                    model: global.aimodel,
+                    userid: m.sender,
+                    voice: true // Add voice parameter
+                },
+                responseType: 'arraybuffer' // Ensure the response is treated as binary data
+            });
+            
+            // Save the audio file temporarily
+            const audioFilePath = `response_${Date.now()}.mp3`;
+            fs.writeFileSync(audioFilePath, gemini.data);
+            
+            // Send the audio file
+            await Miyan.sendAudio(m.chat, fs.readFileSync(audioFilePath));
+            
+            // Delete the temporary file
+            fs.unlinkSync(audioFilePath);
+            return;
+        } catch (err) {
+            console.error(err);
+            await replygcmiyan("Error...");
+            return;
+        }
+    }
+    
+    try {
+        let gemini = await axios.get(`http://localhost:5000/ai`, {
+            params: { 
+                text: text,
+                model: global.aimodel,
+                userid: m.sender,
+                voice: true // Add voice parameter
+            },
+            responseType: 'arraybuffer' // Ensure the response is treated as binary data
+        });
+        
+        // Save the audio file temporarily
+        const audioFilePath = `response_${Date.now()}.mp3`;
+        fs.writeFileSync(audioFilePath, gemini.data);
+        
+        // Send the audio file
+        await Miyan.sendAudio(m.chat, fs.readFileSync(audioFilePath));
+        
+        // Delete the temporary file
+        fs.unlinkSync(audioFilePath);
+        return;
+    } catch (err) {
+        console.error(err);
+        await replygcmiyan("Error...");
+        return;
+    }
+}
+break;
+
 case 'seele-ai': {
     if (!text) return await replygcmiyan(`*Example:* ${prefix + command} Who are you?`);
     
