@@ -11913,14 +11913,7 @@ case 'ai-voice': {
             let { stdout } = await kanjut(`curl -s -F files[]=@${media} https://uguu.se/upload | jq -r '.files[0].url'`);
             let fileUrl = stdout.trim();
             
-            const backendUrl = new URL('http://localhost:5000/ai');
-            backendUrl.searchParams.append('text', text);
-            backendUrl.searchParams.append('file_url', fileUrl);
-            backendUrl.searchParams.append('model', global.aimodel);
-            backendUrl.searchParams.append('userid', m.sender);
-            backendUrl.searchParams.append('voice', true); // Add voice parameter
-            
-            await Miyan.sendAudio(m.chat, backendUrl.toString());
+            await Miyan.sendAudio(m.chat, `http://localhost:5000/ai?text=${text}&file_url=${fileUrl}&model=${global.aimodel}&userid=${m.sender}&voice=True`);
             return;
         } catch (err) {
             console.error(err);
@@ -11930,13 +11923,7 @@ case 'ai-voice': {
     }
     
     try {
-        const backendUrl = new URL('http://localhost:5000/ai');
-        backendUrl.searchParams.append('text', text);
-        backendUrl.searchParams.append('model', global.aimodel);
-        backendUrl.searchParams.append('userid', m.sender);
-        backendUrl.searchParams.append('voice', true); // Add voice parameter
-        
-        await Miyan.sendAudio(m.chat, backendUrl.toString());
+        await Miyan.sendAudio(m.chat, `http://localhost:5000/ai?text=${text}&model=${global.aimodel}&userid=${m.sender}&voice=True`);
         return;
     } catch (err) {
         console.error(err);
