@@ -14,4 +14,3 @@ google.generativeai
 pytubefix
 booru
 playwright
-gtts

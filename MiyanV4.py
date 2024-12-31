@@ -33,7 +33,6 @@ from booru import *
 from playwright.async_api import async_playwright
 from hypercorn.config import Config
 from datetime import datetime
-from gtts import gTTS
 
 # Variable
 app = Quart(__name__)
@@ -537,7 +536,6 @@ async def process_ai():
     realtime = request.args.get('realtime') or False
     userid = request.args.get('userid')
     prompt = request.args.get('prompt')
-    voice = request.args.get('voice') or False  # New parameter for voice
     url_pattern = r'(https?://[^\s]+(?:\?[^\s]*)?)'
     urls = re.findall(url_pattern, text)
 
@@ -607,13 +605,6 @@ async def process_ai():
                 "role": "model",
                 "parts": [response.text]
             })
-
-        # Convert text to speech if voice parameter is True
-        if voice:
-            tts = gTTS(text=response.text, lang='en')
-            audio_filename = "response.mp3"
-            tts.save(audio_filename)
-            return await send_file(audio_filename)
 
         return jsonify({
             'status': 200,
